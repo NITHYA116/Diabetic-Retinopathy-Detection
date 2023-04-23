@@ -6,7 +6,7 @@ import streamlit as st
 import numpy as np
 
 # Load your saved model
-model = tf.keras.models.load_model('my_model.h5')
+model = tf.keras.models.load_model('assets/my_model.h5')
 
 # Define the prediction function
 
@@ -24,12 +24,15 @@ def predict_image(image):
 
 def app():
 
+    # Set app title and favicon
     st.set_page_config(
         page_title='Diabetic Retinopathy Classification App',
         page_icon=":eye:",
         layout="wide"
     )
 
+    # Define app sidebar
+    st.sidebar.image('assets/logo.png', width=250)
     st.sidebar.title('About')
     st.sidebar.info(
         'This app uses a deep learning model to classify diabetic retinopathy.')
@@ -40,14 +43,16 @@ def app():
     st.sidebar.info(
         'To learn more about the dataset, go to https://www.kaggle.com/c/diabetic-retinopathy-detection/overview')
 
-    # Set up page layout
-    col1, col2 = st.columns([3, 2])
-    with col1:
+    # Define app header
+    header = st.container()
+    with header:
         st.title('Diabetic Retinopathy Classification App')
         st.subheader('Upload an image for classification')
-        st.write('')
+        st.markdown('---')
 
-        # Create a file uploader
+    # Define app main section
+    main = st.container()
+    with main:
         uploaded_file = st.file_uploader(
             'Choose an image', type=['jpg', 'jpeg', 'png'])
 
@@ -68,17 +73,24 @@ def app():
             classes = np.argsort(predictions[0])[::-1][:top_k]
             probs = predictions[0][classes]
 
-            st.write('')
-            st.write('## Results')
-            st.write('Top-{} Predictions:'.format(top_k))
-            for i in range(top_k):
-                st.write(
-                    '{}: {:.2%}'.format(class_names[classes[i]], probs[i]),
-                    unsafe_allow_html=True
-                )
+            # Define prediction section
+            prediction = st.container()
+            with prediction:
+                st.write('## Results')
+                st.write('Top-{} Predictions:'.format(top_k))
+                for i in range(top_k):
+                    st.write(
+                        '{}: {:.2%}'.format(class_names[classes[i]], probs[i]),
+                        unsafe_allow_html=True
+                    )
 
-    with col2:
-        st.image('logo.png', width=200)
+    # Define app footer
+    footer = st.container()
+    with footer:
+        st.markdown('---')
+        st.write('Developed by [Your Name](https://yourwebsite.com)')
+        st.write(
+            'Code available on [GitHub](https://github.com/yourusername/yourrepository)')
 
 
 if __name__ == '__main__':
