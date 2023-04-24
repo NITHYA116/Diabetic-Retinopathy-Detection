@@ -59,7 +59,7 @@ def app():
             st.image(
                 image_to_classify,
                 caption='Uploaded image',
-                use_column_width=True
+                width=500
             )
 
             # Make predictions on the image
