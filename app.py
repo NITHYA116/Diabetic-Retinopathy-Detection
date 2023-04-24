@@ -2,6 +2,7 @@
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.preprocessing.image import img_to_array
+from PIL import Image
 import streamlit as st
 import numpy as np
 
@@ -9,8 +10,6 @@ import numpy as np
 model = tf.keras.models.load_model('assets/my_model.h5')
 
 # Define the prediction function
-
-
 def predict_image(image):
     img = image.resize((224, 224))
     img_array = img_to_array(img)
@@ -20,8 +19,6 @@ def predict_image(image):
     return preds
 
 # Define the Streamlit app
-
-
 def app():
 
     # Set app title and favicon
@@ -58,7 +55,7 @@ def app():
 
         if uploaded_file is not None:
             # Display the uploaded image
-            image_to_classify = image.load_img(uploaded_file)
+            image_to_classify = Image.open(uploaded_file)
             st.image(
                 image_to_classify,
                 caption='Uploaded image',
